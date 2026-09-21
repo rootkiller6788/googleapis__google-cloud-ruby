@@ -137,7 +137,7 @@ module Google
               add_config! k, Config.new(v)
             end
           else
-            raise ArgumentError "Category must be a Symbol or Hash"
+            ::Kernel.raise ::ArgumentError, "Category must be a Symbol or Hash"
           end
         end
       end

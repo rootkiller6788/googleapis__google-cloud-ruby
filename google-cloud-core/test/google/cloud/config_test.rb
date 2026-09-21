@@ -91,6 +91,12 @@ describe Google::Cloud::Config do
       assert Google::Cloud::Config === legacy_config.k4
       assert Google::Cloud::Config === legacy_config.k4.k5
     end
+
+    it "raises ArgumentError if a category is neither a Symbol nor a Hash" do
+      _(-> () {
+        legacy_config.add_options ["k4"]
+      }).must_raise ArgumentError
+    end
   end
 
   describe "#add_field!" do
