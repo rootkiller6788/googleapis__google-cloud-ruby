@@ -493,6 +493,16 @@ module Google
         klass == Config
       end
 
+      ##
+      # @private
+      # Implement standard pretty print. Without it, `pp` falls through to
+      # `method_missing`, which reads "pretty_print" as a key and prints
+      # nothing.
+      #
+      def pretty_print q
+        q.text to_s!
+      end
+
       private
 
       ##
@@ -510,6 +520,7 @@ module Google
                       :instance_eval,
                       :instance_exec,
                       :method_missing,
+                      :pretty_print,
                       :send,
                       :singleton_method_added,
                       :singleton_method_removed,

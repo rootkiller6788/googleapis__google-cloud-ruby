@@ -14,6 +14,7 @@
 
 
 require "helper"
+require "pp"
 require "google/cloud/config"
 
 describe Google::Cloud::Config do
@@ -398,6 +399,20 @@ describe Google::Cloud::Config do
       _(-> () {
         _(checked_config.inspect).must_equal "<Config: opt1_int=1 sub1=<Config: opt2_sym=:hi sub2=<Config: opt3_bool=true opt3_bool_nil=true opt3_enum=:one opt3_regex=\"hi\" opt3_class=\"hi\" opt3_default=nil>>>"
       }).must_be_silent
+    end
+  end
+
+  describe "#pretty_print" do
+    it "prints the config instead of falling through to method_missing" do
+      _(PP.pp(checked_config, "".dup)).must_equal \
+        "<Config: opt1_int=1 sub1=<Config: opt2_sym=:hi sub2=<Config: opt3_bool=true opt3_bool_nil=true opt3_enum=:one opt3_regex=\"hi\" opt3_class=\"hi\" opt3_default=nil>>>\n"
+    end
+
+    it "prints a config nested in another object" do
+      holder = Object.new
+      holder.instance_variable_set :@config, checked_config
+
+      _(holder.pretty_inspect).must_include "sub1=<Config: opt2_sym=:hi"
     end
   end
 
